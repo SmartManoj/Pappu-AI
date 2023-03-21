@@ -56,7 +56,7 @@ mins_colloquial ={
     '0': '',
 }
 
-from datetime import datetime
+from datetime import datetime, timedelta
 def round_to_nearest_5(x):
     a=  str(5 * round(float(x)/5)) 
     if a=='60':
@@ -64,7 +64,7 @@ def round_to_nearest_5(x):
     return a
 
 def time_in_tamil():
-    hour, minute = datetime.now().strftime('%I:%M').split(':')
+    hour, minute = datetime.utcnow()+timedelta(hours=5,minutes=30).strftime('%I:%M').split(':')
     minute2 = round_to_nearest_5(minute)
 
     if minute2 == '0' and minute != minute2:
