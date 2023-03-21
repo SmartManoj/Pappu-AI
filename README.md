@@ -6,3 +6,4 @@ TODO:
  Improve Speech Recognition
  Improve voice
  Improve EdgeGPT
+ Adding Slangs
