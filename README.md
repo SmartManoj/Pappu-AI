@@ -7,3 +7,5 @@ TODO:
  Improve voice
  Improve EdgeGPT
  Adding Slangs
+ Add waveforms
+ Chatstyle
