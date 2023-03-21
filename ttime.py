@@ -64,7 +64,7 @@ def round_to_nearest_5(x):
     return a
 
 def time_in_tamil():
-    hour, minute = datetime.utcnow()+timedelta(hours=5,minutes=30).strftime('%I:%M').split(':')
+    hour, minute =(datetime.utcnow()+timedelta(hours=5,minutes=30)).strftime('%I:%M').split(':')
     minute2 = round_to_nearest_5(minute)
 
     if minute2 == '0' and minute != minute2:
