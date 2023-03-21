@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Record and Play Audio</title>
+  <meta charset="UTF-8">
+</head>
+
+<body>
+  <h1>Record and Play Audio</h1>
+  <div>
+    <button id="speak-button" onclick="toggleRecording()">Speak</button>
+  </div>
+  <audio id="audio-player"></audio>
+  <script>
+    let recorder;
+    chunks = [];
+    const speakButton = document.getElementById('speak-button');
+    const audioPlayer = document.getElementById('audio-player');
+    let isRecording = false;
+    i = 1;
+    function toggleRecording() {
+      if (isRecording) {
+        // stop recording
+        recorder.stop();
+        speakButton.innerText = 'Speak';
+        speakButton.classList.remove('recording');
+        isRecording = false;
+        if (1) {
+          // create audio URL and play the current recording
+          recorder.onstop = e => {
+            const blob = new Blob(chunks, { type: 'audio/webm; codecs=opus' });
+            const url = URL.createObjectURL(blob);
+            audioPlayer.src = url;
+            audioPlayer.play();
+            // send recording to server
+            const formData = new FormData();
+            formData.append('audio', blob, 'recording.webm');
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/playback');
+            xhr.send(formData);
+
+            chunks = [];
+          };
+          recorder.stop();
+
+        }
+        else {
+          alert("No recording found");
+        }
+
+      } else {
+        // start recording
+        navigator.mediaDevices.getUserMedia({ audio: true })
+          .then(stream => {
+            recorder = new MediaRecorder(stream);
+            recorder.ondataavailable = e => chunks.push(e.data);
+            recorder.start();
+          })
+          .catch(console.error);
+        speakButton.innerText = 'Stop';
+        speakButton.classList.add('recording');
+        isRecording = true;
+      }
+    }
+
+
+    function playRecording(url) {
+      audioPlayer.src = '';
+      audioPlayer.src = url;
+      audioPlayer.play();
+    }
+  </script>
+  <style>
+    .recording {
+      background-color: red;
+    }
+  </style>
+</body>
+<a href="/t2">t2.html</a>
+
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Text to Speech Example</title>
+</head>
+
+<body>
+  <h1>Text to Speech Example</h1>
+  <textarea id="text-to-speech-input" rows="4" cols="50"></textarea>
+  <br>
+  <button onclick="textToSpeech()">Convert to Speech</button>
+  <br>
+  <br>
+  <div id="text-to-speech-output"></div>
+</body>
+
+</html>
+<script>
+  function textToSpeech() {
+    var input = document.getElementById("text-to-speech-input").value;
+    var output = document.getElementById("text-to-speech-output");
+
+    var utterance = new SpeechSynthesisUtterance(input);
+    utterance.lang = 'ta-IN'; // specify the Tamil language
+
+    speechSynthesis.speak(utterance);
+
+    output.innerHTML = "Converting: " + input;
+  }
+</script>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Record and Play Audio</title>
+  <meta charset="UTF-8">
+</head>
+
+<body>
+  <h1>Record and Play Audio</h1>
+  <div>
+    <button id="speak-button" onclick="toggleRecording()">Speak</button>
+  </div>
+  <audio id="audio-player"></audio>
+  <div id="output"></div>
+  <script>
+    let recorder;
+    chunks = [];
+    const speakButton = document.getElementById('speak-button');
+    const audioPlayer = document.getElementById('audio-player');
+    let isRecording = false;
+    i = 1;
+    function toggleRecording() {
+      if (isRecording) {
+        // stop recording
+        recorder.stop();
+        speakButton.innerText = 'Speak';
+        speakButton.classList.remove('recording');
+        isRecording = false;
+        if (1) {
+          // create audio URL and play the current recording
+          recorder.onstop = e => {
+            const blob = new Blob(chunks, { type: 'audio/webm; codecs=opus' });
+            const url = URL.createObjectURL(blob);
+            // send recording to server
+            const formData = new FormData();
+            formData.append('audio', blob, 'recording.webm');
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/playback',);
+            xhr.send(formData);
+            // save resu to output
+            xhr.responseType = 'blob';
+
+            xhr.onload = function () {
+              if (this.status == 200) {
+                var blob = this.response;
+                var audio = new Audio(URL.createObjectURL(blob));
+                audio.play();
+              }
+            };
+            chunks = [];
+          };
+          recorder.stop();
+
+        }
+        else {
+          alert("No recording found");
+        }
+
+      } else {
+        // start recording
+        navigator.mediaDevices.getUserMedia({ audio: true })
+          .then(stream => {
+            recorder = new MediaRecorder(stream);
+            recorder.ondataavailable = e => chunks.push(e.data);
+            recorder.start();
+          })
+          .catch(console.error);
+        speakButton.innerText = 'Stop';
+        speakButton.classList.add('recording');
+        isRecording = true;
+      }
+    }
+
+
+    function playRecording(input) {
+      if (!input){
+        input='yes';
+      }
+      url=`https://translate.google.com/translate_tts?ie=UTF-8&q=${input}%21&tl=en-US&ttsspeed=1&total=1&idx=0&client=tw-ob&textlen=14&tk=594228.1040269`
+      audioPlayer.src = url;
+      audioPlayer.play();
+    }
+  </script>
+  <style>
+    .recording {
+      background-color: red;
+    }
+  </style>
+</body>
+<a href="/t2">t2.html</a>
+
+</html>

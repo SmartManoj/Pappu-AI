@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Record and Play Audio</title>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <h1>Record and Play Audio</h1>
+    <div>
+        <button id="record-button" onclick="startRecording()">Record</button>
+        <button id="stop-button" onclick="stopRecording()">Stop</button>
+        <button id="play-button" onclick="playRecording()">Play</button>
+    </div>
+    <audio id="audio-player"></audio>
+    <script>
+        let recorder, chunks = [];
+        const recordButton = document.getElementById('record-button');
+        const stopButton = document.getElementById('stop-button');
+        const playButton = document.getElementById('play-button');
+        const audioPlayer = document.getElementById('audio-player');
+
+        function startRecording() {
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(stream => {
+                    recorder = new MediaRecorder(stream);
+                    recorder.ondataavailable = e => chunks.push(e.data);
+                    recorder.start();
+                })
+                .catch(console.error);
+            recordButton.disabled = true;
+            stopButton.disabled = false;
+            playButton.disabled = true;
+        }
+
+        function stopRecording() {
+            recorder.stop();
+            stopButton.disabled = true;
+            playButton.disabled = false;
+        }
+
+        function playRecording() {
+            const blob = new Blob(chunks, { type: 'audio/webm; codecs=opus' });
+            const formData = new FormData();
+            formData.append('audio', blob);
+            fetch('/playback', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = URL.createObjectURL(blob);
+                    audioPlayer.src = url;
+                    audioPlayer.play();
+                    recordButton.disabled = false;
+                    playButton.disabled = true;
+                    chunks = [];
+                })
+                .catch(console.error);
+        }
+    </script>
+</body>
+</html>
