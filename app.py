@@ -80,7 +80,10 @@ async def playback():
                 transcript=time_in_tamil()
     else:
         if transcript:
-            transcript=await bing(transcript)
+            try:
+                transcript=await bing(transcript)
+            except:
+                transcript= f'{transcript}. நீங்க சொன்னது இதுதானா? ஒரு கோளாறு. அப்றம் பாக்கலாம்.'
         else:
             transcript= 'சரியா கேக்கலீங்க. இன்னொரு முற  சொல்லுங்க.'
     from gtts import gTTS
