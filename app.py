@@ -6,7 +6,7 @@ import wave
 import speech_recognition as sr
 from flask import Flask, render_template, request, send_file
 from flask_socketio import SocketIO, emit
-
+os.chdir('Maniyaandi')
 from ai import bing
 with open('count.txt') as f:
     count=int(f.read())
@@ -33,7 +33,7 @@ def handle_stream(audio):
             transcript = 'Unknown'
         emit('transcript', transcript)
 
-@app.route('/')
+@app.route('/index')
 def index():
     return render_template('index.html')
 
@@ -88,7 +88,7 @@ async def playback():
     tts.save('output.mp3')
     print('saved',flush=True)
     return send_file('output.mp3')
-@app.route('/t')
+@app.route('/')
 def index2():
     return render_template('t.html')
 
