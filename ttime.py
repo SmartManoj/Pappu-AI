@@ -2,7 +2,7 @@ hours_colloquial ={
     '01': 'ஒன்னு',
     '02': 'ரெண்டு',
     '03': 'மூனு',
-    '04': 'நாலு',
+    '04': 'நால்',
     '05': 'அஞ்சு',
     '06': 'ஆறு',
     '07': 'ஏழு',
@@ -51,8 +51,8 @@ mins_colloquial ={
     '35': 'முப்பத்தஞ்சு',
     '40' : 'நாப்பது',
     '45' : 'முக்கால்',
-    '50' : 'ஐம்பது',
-    '55': 'ஐம்பத்தஞ்சு',
+    '50' : 'அம்பது',
+    '55': 'அம்பத்தஞ்சு',
     '0': '',
 }
 
@@ -65,18 +65,20 @@ def round_to_nearest_5(x):
 
 def time_in_tamil():
     hour, minute = datetime.now().strftime('%I:%M').split(':')
-    minute = round_to_nearest_5(minute)
+    minute2 = round_to_nearest_5(minute)
 
-    minute2 = mins_colloquial[minute]
-    if minute2 == '00' and minute != minute2:
-        hour = hours_colloquial[str(int(hour)+1)]
+    if minute2 == '0' and minute != minute2:
+        hour = str(int(hour)+1)
+    minute3 = mins_colloquial[minute2]
+    if minute2 in ['15','45']:
+        hour = hours_colloquial_15[hour]
+    elif minute2 == '30':
+        hour = hours_colloquial_30[hour]
+        minute3 =''
     else:
-        if minute2 in ['15','45']:
-            hour = hours_colloquial_15[hour]
-        elif minute2 == '30':
-            hour = hours_colloquial_15[hour]
-            minute2 =''
-        else:
-            hour = hours_colloquial[hour]
-    print(hour + ' ' + minute2)
-    return hour + ' ' + minute2
+        hour = hours_colloquial[hour]
+    print(hour + ' ' + minute3)
+    return hour + ' ' + minute3
+
+if __name__ == '__main__':
+    (time_in_tamil())

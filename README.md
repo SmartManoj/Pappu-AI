@@ -1,2 +1,8 @@
 # Maniyaandi
- Tamil digital assistant
+ A Tamizh digital assistant
+
+TODO:
+ Silence Detection
+ Improve Speech Recognition
+ Improve voice
+ Improve EdgeGPT

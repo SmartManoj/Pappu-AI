@@ -2,14 +2,17 @@
 <html>
 
 <head>
-  <title>Record and Play Audio</title>
+  <title>Maniyaandi - A Tamizh Digital Assistant</title>
   <meta charset="UTF-8">
 </head>
 
 <body>
-  <h1>Record and Play Audio</h1>
+  <h1>Maniyaandi - A Tamizh Digital Assistant</h1>
   <div>
-    <button id="speak-button" onclick="toggleRecording()">Speak</button>
+    <button id="speak-button" onclick="toggleRecording()">Speak</button> <br>
+    <button id="time-button" onclick="predefined_text('மணி எத்தன')">மணி எத்தன?</button><br>
+    <input id="echo_text" >
+    <button onclick="echo()">Echo</button>
   </div>
   <audio id="audio-player"></audio>
   <div id="output"></div>
@@ -20,11 +23,31 @@
     const audioPlayer = document.getElementById('audio-player');
     let isRecording = false;
     i = 1;
+    function ehco(){
+
+    }
+    function predefined_text(text) {
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', `/playback?pre_defined=${text}`,);
+      // save resu to output
+
+      xhr.responseType = 'blob';
+
+      xhr.onload = function () {
+        if (this.status == 200) {
+          var blob = this.response;
+          var audio = new Audio(URL.createObjectURL(blob));
+          audio.play();
+        }
+      };
+      xhr.send();
+    }
     function toggleRecording() {
       if (isRecording) {
         // stop recording
         recorder.stop();
-        speakButton.innerText = 'Speak';
+        speakButton.innerText = 'Processing';
+        speakButton.disabled = true;
         speakButton.classList.remove('recording');
         isRecording = false;
         if (1) {
@@ -47,6 +70,8 @@
                 var audio = new Audio(URL.createObjectURL(blob));
                 audio.play();
               }
+              speakButton.innerText = 'Speak';
+              speakButton.disabled = false;
             };
             chunks = [];
           };
@@ -73,13 +98,29 @@
     }
 
 
-    function playRecording(input) {
+    function echo(input) {
+      if (!input){
+        input= echo_text.value;
+      }
       if (!input){
         input='yes';
       }
-      url=`https://translate.google.com/translate_tts?ie=UTF-8&q=${input}%21&tl=en-US&ttsspeed=1&total=1&idx=0&client=tw-ob&textlen=14&tk=594228.1040269`
-      audioPlayer.src = url;
-      audioPlayer.play();
+      // Check if speech synthesis is supported by the browser
+      if ('speechSynthesis' in window) {
+        // Create a new instance of SpeechSynthesisUtterance
+        const msg = new SpeechSynthesisUtterance();
+
+        // Set the text to speak
+        msg.text = input;
+        msg.lang = 'ta-IN';
+
+        // Speak the text
+        window.speechSynthesis.speak(msg);
+      }
+      else{
+        alert('Not supported; Try canary version')
+      }
+      
     }
   </script>
   <style>
@@ -88,6 +129,7 @@
     }
   </style>
 </body>
-<a href="/t2">t2.html</a>
+
+<a href="'https://github.com/SmartManoj/Maniyaandi">Source</a>
 
 </html>
