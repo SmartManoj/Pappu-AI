@@ -53,22 +53,22 @@ mins_colloquial ={
     '45' : 'முக்கால்',
     '50' : 'அம்பது',
     '55': 'அம்பத்தஞ்சு',
-    '0': '',
+    '00': '',
 }
 
 from datetime import datetime, timedelta
 def round_to_nearest_5(x):
     a=  str(5 * round(float(x)/5)) 
     if a=='60':
-        return '0'
+        return '00'
     return a
 
 def time_in_tamil():
     hour, minute =(datetime.utcnow()+timedelta(hours=5,minutes=30)).strftime('%I:%M').split(':')
     minute2 = round_to_nearest_5(minute)
 
-    if minute2 == '0' and minute != minute2:
-        hour = str(int(hour)+1)
+    if minute2 == '00' and minute != minute2:
+        hour = f'{(int(hour)+1):02}'
     minute3 = mins_colloquial[minute2]
     if minute2 in ['15','45']:
         hour = hours_colloquial_15[hour]
