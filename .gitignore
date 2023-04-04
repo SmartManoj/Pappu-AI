@@ -3,3 +3,5 @@ t.py
 *.pem
 *.crt
 .env
+
+__pycache__/*

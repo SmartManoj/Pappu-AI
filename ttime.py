@@ -63,6 +63,10 @@ def round_to_nearest_5(x):
         return '00'
     return a
 
+def exact_time_in_tamil():
+    hour, minute =(datetime.utcnow()+timedelta(hours=5,minutes=30)).strftime('%-I:%M').split(':')
+    return f'"{hour}" "{minute}"'
+
 def time_in_tamil():
     hour, minute =(datetime.utcnow()+timedelta(hours=5,minutes=30)).strftime('%I:%M').split(':')
     minute2 = round_to_nearest_5(minute)
@@ -81,4 +85,5 @@ def time_in_tamil():
     return hour + ' ' + minute3
 
 if __name__ == '__main__':
-    (time_in_tamil())
+    # print(time_in_tamil())
+    print(exact_time_in_tamil())

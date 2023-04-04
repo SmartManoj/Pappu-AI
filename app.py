@@ -1,12 +1,13 @@
 import os
 import io
-import tempfile
 from time import sleep
 import wave
 import speech_recognition as sr
 from flask import Flask, render_template, request, send_file
 from flask_socketio import SocketIO, emit
-os.chdir('Maniyaandi')
+is_local = os.environ['USER'] == 'smart'
+if not is_local:
+    os.chdir('Maniyaandi')
 from ai import bing
 with open('count.txt') as f:
     count=int(f.read())
@@ -37,7 +38,7 @@ def handle_stream(audio):
 def index():
     return render_template('index.html')
 
-from ttime import time_in_tamil
+from ttime import time_in_tamil,exact_time_in_tamil
 import requests
 import requests
 
@@ -77,7 +78,9 @@ async def playback():
         transcript=pre_defined
             
     if transcript in ['மணி எத்தனை','மணி எத்தன']:
-                transcript=time_in_tamil()
+        transcript=time_in_tamil()
+    elif transcript in ['சரியாக மணி எத்தனை','சரிய மணி எத்தன']:
+        transcript='சரியான நேரம் '+ exact_time_in_tamil()
     else:
         if transcript:
             try:
