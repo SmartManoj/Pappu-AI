@@ -57,6 +57,7 @@ mins_colloquial ={
 }
 
 from datetime import datetime, timedelta
+import sys
 def round_to_nearest_5(x):
     a=  str(5 * round(float(x)/5)) 
     if a=='60':
@@ -66,7 +67,7 @@ def round_to_nearest_5(x):
 def exact_time_in_tamil():
     hour, minute =(datetime.utcnow()+timedelta(hours=5,minutes=30)).strftime('%I:%M').split(':')
     hour, minute = hour.lstrip('0'), minute.lstrip('0')
-    return f'"{hour}" "{minute}"'
+    return f'சரியான நேரம் "{hour}" "{minute}"'
 
 def time_in_tamil():
     hour, minute =(datetime.utcnow()+timedelta(hours=5,minutes=30)).strftime('%I:%M').split(':')
@@ -89,7 +90,10 @@ def time_in_tamil():
 
 if __name__ == '__main__':
     from pyperclip import copy
-    time = (time_in_tamil())
+    if sys.argv[1:]:
+        time=(exact_time_in_tamil())
+    else:
+        time = (time_in_tamil())
     copy(time)
     print(time)
     print(exact_time_in_tamil())
