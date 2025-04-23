@@ -1,4 +1,4 @@
-# Maniyaandi
+# Pappu AI
  A Tamizh digital assistant
 
 TODO:

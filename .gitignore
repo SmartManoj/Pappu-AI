@@ -7,3 +7,6 @@ t.py
 __pycache__/*
 *.java
 *.class
+/__pycache__
+audio.webm
+audio.wav

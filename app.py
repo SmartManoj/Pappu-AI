@@ -5,10 +5,10 @@ import wave
 import speech_recognition as sr
 from flask import Flask, render_template, request, send_file
 from flask_socketio import SocketIO, emit
-is_local = os.environ['USER'] == 'smart'
+is_local = os.environ.get('USER',os.environ.get('username')) == 'smart'
 if not is_local:
-    os.chdir('Maniyaandi')
-from ai import bing
+    os.chdir('Pappu-AI')
+# from ai import bing
 with open('count.txt') as f:
     count=int(f.read())
 app = Flask(__name__)
@@ -79,8 +79,8 @@ async def playback():
             
     if transcript in ['மணி எத்தனை','மணி எத்தன']:
         transcript=time_in_tamil()
-    elif transcript in ['சரியாக மணி எத்தனை','சரிய மணி எத்தன']:
-        transcript='சரியான நேரம் '+ exact_time_in_tamil()
+    elif transcript in ['சரியான மணி எத்தனை','சரிய மணி எத்தன', 'சரியா மணி எத்தனை']:
+        transcript=exact_time_in_tamil()
     else:
         if transcript:
             try:
@@ -89,14 +89,14 @@ async def playback():
                     from telegram import Bot
                     from dotenv import load_dotenv
                     load_dotenv()
-                    import os
                     bot= Bot(os.getenv('TG_TOKEN'))
                     bot.send_message(369189676,transcript)
 
 
                 except:
                     pass
-                transcript=await bing(transcript)
+                # transcript=await bing(transcript)
+                transcript = transcript
             except:
                 transcript= f'{transcript}. நீங்க சொன்னது இதுதானா? ஒரு கோளாறு. அப்றம் பாக்கலாம்.'
         else:
