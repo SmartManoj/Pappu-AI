@@ -4,6 +4,7 @@
 Why Pappu AI?
 
 [Gemini is not telling correct time.](https://www.reddit.com/r/Bard/comments/1hbxesb/tts_engine_is_adding_extra_wrong_time_indicator)
+No system is currently saying round time in colloquial Tamil?
 
  
 
